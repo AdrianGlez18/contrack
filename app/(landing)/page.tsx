@@ -9,7 +9,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen w-full">
       <header className="border-b w-full flex items-center justify-center">
-        <div className="container flex items-center justify-between h-16">
+        <div className="container flex items-center justify-between h-16 mx-4 px-4">
           <div className="flex items-center gap-2 font-semibold">
             <Library className="h-6 w-6 mr-2" />
             <span>Contrack</span>
@@ -38,10 +38,10 @@ export default function LandingPage() {
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild>
+              <Button size="lg" variant="outline" asChild disabled>
                 <a href="#" target="_blank" rel="noopener noreferrer">
                   <Chrome className="mr-2 h-4 w-4" />
-                  Chrome Extension
+                  Chrome Extension (soon)
                 </a>
               </Button>
             </div>
