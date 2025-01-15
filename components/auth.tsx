@@ -7,6 +7,11 @@ const Auth = () => {
     const signInWithGoogle = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
+            options: {
+                redirectTo: process.env.NODE_ENV === 'production'
+                    ? 'https://contrack-ten.vercel.app/folders'
+                    : 'http://localhost:3000/folders',
+            },
         });
         if (error) console.error('Error al iniciar sesión:', error.message);
     };
