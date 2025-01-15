@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model PrismaUser {
+  id             String    @id @default(cuid())
+  supabaseAuthId String    @unique
+  username       String?
+  email          String
+  content        Content[]
+  folders        Folder[]
+  tools          Tool[]
+  //tags           Tag[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Content {
+  id          String      @id @default(cuid())
+  title       String
+  url         String
+  completed   Boolean
+  type        ContentType
+  description String?
+  notes       String?
+  rating      Int?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  //tags        Tag[]
+  tags    String[]
+  folder      Folder?     @relation(fields: [folderId], references: [id])
+  folderId    String?
+
+  userId String
+  user   PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
+}
+
+model Folder {
+  id        String    @id @default(cuid())
+  name      String
+  parent    Folder?   @relation("FolderToFolder", fields: [parentId], references: [id])
+  parentId  String?
+  children  Folder[]  @relation("FolderToFolder")
+  content   Content[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  userId String
+  user   PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
+}
+
+/* model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  //content   Content[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //contentIds String[]
+  //content    Content    @relation(fields: [contentIds], references: [id], onDelete: Cascade)
+  //PrismaUser PrismaUser[]
+  userId     String
+  user       PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
+} */
+
+model Tool {
+  id        String   @id @default(cuid())
+  title     String
+  iconUrl   String // URL to the stored icon
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
+}
+
+enum ContentType {
+  VIDEO
+  ARTICLE
+  SERIES
+}
