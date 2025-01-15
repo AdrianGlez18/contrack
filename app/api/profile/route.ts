@@ -4,7 +4,7 @@ import { db } from "@/lib/server/db";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
-export default async function handler() {
+export const GET = async () => {
     const supabase = await createClient();
     const {
         data: { user },
@@ -36,5 +36,5 @@ export default async function handler() {
     }
 }
 
-export const GET = handler
+//export const GET = handler
 //export const POST = handler
