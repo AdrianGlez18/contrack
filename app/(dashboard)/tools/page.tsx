@@ -139,15 +139,6 @@ export default function ToolsPage() {
                                             }
                                         />
                                     </div>
-                                    {/* <IconUpload
-                                        value={newTool.iconUrl}
-                                        onChange={(url) =>
-                                            setNewTool((prev) => ({ ...prev, iconUrl: url }))
-                                        }
-                                        onClear={() =>
-                                            setNewTool((prev) => ({ ...prev, iconUrl: "" }))
-                                        }
-                                    /> */}
                                     <div className="grid gap-2">
                                         <Label htmlFor="url">URL</Label>
                                         <Input
@@ -238,7 +229,7 @@ export default function ToolsPage() {
                                             fill
                                             className="object-contain p-2"
                                             onError={() => handleIconError(item.id)}
-                                            unoptimized // For external images
+                                            unoptimized
                                         />
                                     </div>
                                     <span className="text-sm font-medium text-center line-clamp-2">

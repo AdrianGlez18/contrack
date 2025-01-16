@@ -13,7 +13,7 @@ export const ProfileProvider = ({ children }: { children: React.ReactNode }) => 
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    //useEffect(() => {
+    useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const response = await fetch(`/api/profile`);
@@ -33,7 +33,7 @@ export const ProfileProvider = ({ children }: { children: React.ReactNode }) => 
             console.log('Fetching profile...');
             fetchProfile();
         }
-    //}, []); 
+    }, []); 
 
       
 

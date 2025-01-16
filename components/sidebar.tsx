@@ -26,14 +26,14 @@ import { useAction } from "@/hooks/useAction"
 import { createFolder } from "@/lib/server/actions/folder/create"
 import { toast } from "sonner"
 import { useProfile } from "./context/profileContext"
+import path from "path"
 
-
+//todo fix active section highlight when redirected
 export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
 
   let { profile, loading } = useProfile();
-  console.log("profile", profile, loading)
 
   const [activeFolder, setActiveFolder] = useState<string>('')
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set())
@@ -251,7 +251,7 @@ export function Sidebar() {
                 className={cn(
                   "w-full justify-start gap-2 relative",
                   {
-                    "bg-accent": activeFolder === '//folders',
+                    "bg-accent": activeFolder === '//folders' || pathname === '/folders',
                   },
                 )}
                 onClick={(e) => {

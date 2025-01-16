@@ -38,11 +38,13 @@ export default function LandingPage() {
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild disabled>
-                <a href="#" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" variant="outline" asChild disabled={true} className="disabled">
+                {/* <a href="#" target="_blank" rel="noopener noreferrer"> */}
+                  <div>
                   <Chrome className="mr-2 h-4 w-4" />
                   Chrome Extension (soon)
-                </a>
+                  </div>
+                {/* </a> */}
               </Button>
             </div>
           </div>
