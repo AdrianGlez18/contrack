@@ -52,6 +52,7 @@ export function Sidebar() {
     if (profile?.folders) {
       console.log("inside if setting folders")
       setFolders(profile.folders);
+      console.log("folders", folders)
     }
   }, [profile?.folders]);
 
