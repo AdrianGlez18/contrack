@@ -27,6 +27,7 @@ import { createFolder } from "@/lib/server/actions/folder/create"
 import { toast } from "sonner"
 import { useProfile } from "./context/profileContext"
 import path from "path"
+import { set } from "zod"
 
 //todo fix active section highlight when redirected
 export function Sidebar() {
@@ -41,7 +42,7 @@ export function Sidebar() {
   const [newFolderName, setNewFolderName] = useState("")
   const [selectedParentFolder, setSelectedParentFolder] = useState<string>()
   const [createDialogExpandedFolders, setCreateDialogExpandedFolders] = useState<Set<string>>(new Set())
-  const [folders, setFolders] = useState<any>(profile?.folders || [])
+  const [folders, setFolders] = useState<any>([])
   const [rootFolders, setRootFolders] = useState<any>([])
   const [folderTree, setFolderTree] = useState<any>([])
   //const [user, setUser] = useState<any>(null);
@@ -49,6 +50,7 @@ export function Sidebar() {
   useEffect(() => {
     console.log("setting folders")
     if (profile?.folders) {
+      console.log("inside if setting folders")
       setFolders(profile.folders);
     }
   }, [profile?.folders]);

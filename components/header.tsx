@@ -21,6 +21,8 @@ import { useProfile } from "./context/profileContext"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 
 //TODO Change tags component to filtered one
+//Todo sort content
+//todo pagination (12 per page)
 
 export function Header({ title = "", initialContent = [], folderContent = [], setFolderContent }:
   {
