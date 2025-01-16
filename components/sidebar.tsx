@@ -52,11 +52,13 @@ export function Sidebar() {
     if (profile?.folders) {
       console.log("inside if setting folders")
       setFolders(profile.folders);
+      console.log("profile.folders", profile.folders)
       console.log("folders", folders)
     }
   }, [profile?.folders]);
 
   useEffect(() => {
+    console.log("setting root folders and tree")
     setRootFolders(folders.filter((folder: any) => !folder.parentId));
     setFolderTree(rootFolders.map((folder: any) => buildFolderTree(folders, folder)));
   }, [folders]);
