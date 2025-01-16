@@ -51,7 +51,7 @@ export function Sidebar() {
     if (profile?.folders) {
       setFolders(profile.folders);
     }
-  }, [profile, loading]);
+  }, [profile?.folders]);
 
   useEffect(() => {
     setRootFolders(folders.filter((folder: any) => !folder.parentId));
