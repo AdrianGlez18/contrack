@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner";
 import { Plus, Trash2, X } from 'lucide-react'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useAction } from "@/hooks/useAction"
 import { createTool } from "@/lib/server/actions/tool/create"
@@ -35,14 +35,7 @@ import { deleteTool } from "@/lib/server/actions/tool/delete"
 
 export default function ToolsPage() {
 
-    //TODO: FIX HOOKS ORDER
-
     let { profile, loading } = useProfile();
-
-    //TODO: estilos (retornar ruedita)
-    if (loading) {
-        return <p>Loading...</p>;
-    }
 
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isDeleteMode, setIsDeleteMode] = useState(false)
@@ -52,8 +45,15 @@ export default function ToolsPage() {
         iconUrl: "auto",
         url: "",
     })
-    //todo arreglar. Considerar que la pagina no sea useclient sino el componente que renderiza las listas
-    const [tools, setTools] = useState<any>(profile?.tools)
+
+    const [tools, setTools] = useState<any>([])
+
+    useEffect(() => {
+        if (profile?.tools) {
+            setTools(profile.tools);
+        }
+    }), [profile?.tools]
+
     const [failedIcons, setFailedIcons] = useState<Set<string>>(new Set())
     const [search, setSearch] = useState("")
     const [sortBy, setSortBy] = useState<"alphabetical" | "date">("alphabetical")
@@ -82,6 +82,11 @@ export default function ToolsPage() {
             toast.error("Error deleting tool");
         }
     });
+
+    //TODO: estilos (retornar skeleton)
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     const handleAddTool = () => {
         executeCreate(newTool)

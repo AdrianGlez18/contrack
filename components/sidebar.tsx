@@ -33,6 +33,7 @@ export function Sidebar() {
   const router = useRouter()
 
   let { profile, loading } = useProfile();
+  console.log("profile", profile, loading)
 
   const [activeFolder, setActiveFolder] = useState<string>('')
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set())
@@ -46,10 +47,11 @@ export function Sidebar() {
   //const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
+    console.log("setting folders")
     if (profile?.folders) {
       setFolders(profile.folders);
     }
-  }, [profile?.folders]);
+  }, [profile, loading]);
 
   useEffect(() => {
     setRootFolders(folders.filter((folder: any) => !folder.parentId));
