@@ -21,7 +21,7 @@ import { FolderTree } from "./folder-tree"
 import { buildFolderTree } from "@/lib/utils"
 import { FolderSelect } from "./folder-select"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { createClient } from "@/lib/supabase/client"
+//import { createClient } from "@/lib/supabase/client"
 import { useAction } from "@/hooks/useAction"
 import { createFolder } from "@/lib/server/actions/folder/create"
 import { toast } from "sonner"
@@ -33,9 +33,6 @@ export function Sidebar() {
   const router = useRouter()
 
   let { profile, loading } = useProfile();
-  const supabase = createClient();
-
-
 
   const [activeFolder, setActiveFolder] = useState<string>('')
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set())
@@ -43,10 +40,10 @@ export function Sidebar() {
   const [newFolderName, setNewFolderName] = useState("")
   const [selectedParentFolder, setSelectedParentFolder] = useState<string>()
   const [createDialogExpandedFolders, setCreateDialogExpandedFolders] = useState<Set<string>>(new Set())
-  const [folders, setFolders] = useState<any>([])
+  const [folders, setFolders] = useState<any>(profile?.folders || [])
   const [rootFolders, setRootFolders] = useState<any>([])
   const [folderTree, setFolderTree] = useState<any>([])
-  const [user, setUser] = useState<any>(null);
+  //const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (profile?.folders) {
