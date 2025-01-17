@@ -51,9 +51,13 @@ export function Sidebar() {
     console.log("setting folders")
     if (profile?.folders) {
       console.log("inside if setting folders")
-      setFolders(profile.folders);
+      /* setFolders(profile.folders);
       console.log("profile.folders", profile.folders)
-      console.log("folders", folders)
+      console.log("folders", folders) */
+      setFolders(() => {
+        console.log("profile.folders", profile.folders);
+        return profile.folders; // Actualización de estado
+    });
     }
   }, [profile?.folders]);
 
