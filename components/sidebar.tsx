@@ -54,17 +54,29 @@ export function Sidebar() {
       /* setFolders(profile.folders);
       console.log("profile.folders", profile.folders)
       console.log("folders", folders) */
-      setFolders(() => {
+      /* setFolders(() => {
         console.log("profile.folders", profile.folders);
         return profile.folders; // Actualización de estado
-    });
+    }); */
+      setRootFolders(profile.folders.filter((folder: any) => !folder.parentId));
+      setFolderTree(rootFolders.map((folder: any) => buildFolderTree(profile.folders, folder)));
+      setFolders(profile.folders);
     }
   }, [profile?.folders]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("setting root folders and tree")
     setRootFolders(folders.filter((folder: any) => !folder.parentId));
     setFolderTree(rootFolders.map((folder: any) => buildFolderTree(folders, folder)));
+  }, [folders]); */
+
+  useEffect(() => {
+    //if folders array is not empty
+    if (folders.length > 0) {
+      console.log("setting root folders and tree")
+      setRootFolders(folders.filter((folder: any) => !folder.parentId));
+      setFolderTree(rootFolders.map((folder: any) => buildFolderTree(folders, folder)));
+    }
   }, [folders]);
 
   const { execute: executeCreate, fieldErrors: createFieldErrors } = useAction(createFolder, {
@@ -253,35 +265,35 @@ export function Sidebar() {
 
 
             <ScrollArea>
-            <div className="space-y-1 mt-2  flex flex-col max-h-[50vh] 2xl:max-h-[60vh]">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "w-full justify-start gap-2 relative",
-                  {
-                    "bg-accent": activeFolder === '//folders' || pathname === '/folders',
-                  },
-                )}
-                onClick={(e) => {
-                  setActiveFolder('//folders')
-                }}
-                asChild
-              >
-                <Link href={`/folders`}>
+              <div className="space-y-1 mt-2  flex flex-col max-h-[50vh] 2xl:max-h-[60vh]">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={cn(
+                    "w-full justify-start gap-2 relative",
+                    {
+                      "bg-accent": activeFolder === '//folders' || pathname === '/folders',
+                    },
+                  )}
+                  onClick={(e) => {
+                    setActiveFolder('//folders')
+                  }}
+                  asChild
+                >
+                  <Link href={`/folders`}>
 
-                  <Folder className="h-4 w-4 shrink-0" />
-                  All
-                </Link>
-              </Button>
-              <FolderTree
-                folders={folderTree}
-                activeFolder={activeFolder}
-                onFolderClick={handleFolderClick}
-                expandedFolders={expandedFolders}
-                onToggleExpand={handleToggleExpand}
-              />
-            </div>
+                    <Folder className="h-4 w-4 shrink-0" />
+                    All
+                  </Link>
+                </Button>
+                <FolderTree
+                  folders={folderTree}
+                  activeFolder={activeFolder}
+                  onFolderClick={handleFolderClick}
+                  expandedFolders={expandedFolders}
+                  onToggleExpand={handleToggleExpand}
+                />
+              </div>
             </ScrollArea>
 
 
