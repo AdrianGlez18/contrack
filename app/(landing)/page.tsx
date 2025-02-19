@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { SignUpButton } from "@clerk/nextjs"
 import { ChevronRight, Chrome, Folder, Library, Tags, Video } from 'lucide-react'
 import Link from "next/link"
 
@@ -17,6 +18,7 @@ export default function LandingPage() {
           <Button variant="ghost" asChild>
             <Link href="/login">Sign in</Link>
           </Button>
+          <SignUpButton/>
         </div>
       </header>
       <main className="flex flex-col w-full items-center justify-center">

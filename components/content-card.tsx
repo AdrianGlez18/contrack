@@ -5,6 +5,13 @@ import { Button } from "./ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "./ui/card"
 import { Badge } from "./ui/badge"
 import Link from "next/link"
+import Image from "next/image"
+import { getYouTubeId } from "@/lib/utils"
+
+function getVideoThumbnail(url: string): string | null {
+  const videoId = getYouTubeId(url)
+  return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null
+}
 
 interface ContentCardProps {
   id: string,
@@ -19,6 +26,17 @@ interface ContentCardProps {
 const ContentCard = ({ id, title, description, contentType, url, tags, completed }: ContentCardProps) => {
   return (
     <Card key={id}>
+      {contentType === "VIDEO" && getVideoThumbnail(url) && (
+        <div className="relative w-full h-48 overflow-hidden">
+          <Image 
+            src={getVideoThumbnail(url)!}
+            alt={`Video thumbnail for ${title}`}
+            width={400}
+            height={225}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
       <CardHeader>
         <div className="flex items-center gap-2">
           {contentType === "VIDEO" && <Video className="h-5 w-5 text-primary" />}
