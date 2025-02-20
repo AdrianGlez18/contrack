@@ -4,22 +4,19 @@ import { InputType, OutputType } from "./types";
 import { db } from "@/lib/server/db";
 import { ContentZodSchema } from "./schema";
 import { createSafeAction } from "../../createSafeAction";
-import { createClient } from "@/lib/supabase/server";
-//https://www.youtube.com/watch?v=pbJf5fKLRK8
+import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 const create = async (data: InputType): Promise<OutputType> => {
-    const supabase = await createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
 
-    if (!user || !user.id) {
+    const { userId } = await auth();
+
+    if (!userId) {
         return {
             error: "Unauthorized"
         }
-    }
-
-    const userId = user.id;
+    };
+    
     const { title, url, contentType, description, notes, rating, tags, folderId, completed } = data;
 
     let newContent;
@@ -39,6 +36,12 @@ const create = async (data: InputType): Promise<OutputType> => {
                 userId
             }
         })
+        
+        revalidatePath(`/folders/${newContent.folderId}`);
+        revalidatePath('/folders');
+        revalidatePath('/content');
+        revalidatePath('/');
+        
     } catch (error) {
         return {
             error: "Internal database error"

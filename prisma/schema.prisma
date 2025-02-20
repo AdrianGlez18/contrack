@@ -7,16 +7,14 @@ datasource db {
   url       = env("DATABASE_URL")
   //directUrl = env("DIRECT_URL")
 }
-
+//todo create trigger in neon
 model PrismaUser {
   id             String    @id @default(cuid())
-  supabaseAuthId String    @unique
-  username       String?
-  email          String
+  userId         String    @unique
+  email          String    @unique
   content        Content[]
   folders        Folder[]
   tools          Tool[]
-  //tags           Tag[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
@@ -38,7 +36,7 @@ model Content {
   folderId    String?
 
   userId String
-  user   PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
+  user   PrismaUser @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Folder {
@@ -52,22 +50,8 @@ model Folder {
   updatedAt DateTime  @updatedAt
 
   userId String
-  user   PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
+  user   PrismaUser @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
-
-/* model Tag {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  //content   Content[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  //contentIds String[]
-  //content    Content    @relation(fields: [contentIds], references: [id], onDelete: Cascade)
-  //PrismaUser PrismaUser[]
-  userId     String
-  user       PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
-} */
 
 model Tool {
   id        String   @id @default(cuid())
@@ -78,7 +62,7 @@ model Tool {
   updatedAt DateTime @updatedAt
 
   userId String
-  user   PrismaUser @relation(fields: [userId], references: [supabaseAuthId], onDelete: Cascade)
+  user   PrismaUser @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 enum ContentType {

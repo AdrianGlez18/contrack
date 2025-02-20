@@ -1,61 +1,31 @@
-"use client"
-
-import { notFound } from "next/navigation"
-import ContentCard from "@/components/content-card"
 import ContentWrapper from "@/components/content-wrapper"
-import { useEffect, useState } from "react"
-import { useProfile } from "@/components/context/profileContext"
+import { auth } from "@clerk/nextjs/server"
+import { getContent, getFolder, getFolderContent } from "@/lib/server/queries"
+import { notFound, redirect } from "next/navigation"
 
-export default function FolderPage({
+
+const FolderPage = async ({
   params,
 }: {
   params: { folderId: string }
-}) {
-  
-  let { profile, loading } = useProfile();
-  const [folderContent, setFolderContent] = useState<any>([])
+}) => {
 
-  useEffect(() => {
-    if (profile?.content) {
-      setFolderContent(profile.content.filter((item: any) => item.folderId === params.folderId));
-    }
-  }, [profile?.content]);
-  
-  console.log("/folders/id loaded")
+  const { userId } = await auth();
 
-
-  //TODO: estilos (retornar skeleton)
-  if (loading) {
-    return <p>Loading...</p>;
+  if (!userId) {
+    redirect("/sign-in");
   }
 
-  const folder = profile?.folders.find((f: any) => f.id === params.folderId)
+  const folder = await getFolder(params.folderId);
+  const folderContent = await getFolderContent(params.folderId);
 
   if (!folder) {
-    notFound()
+    notFound();
   }
-
-  const initialContent = profile?.content.filter((item: any) => item.folderId === params.folderId)
-
+  
   return (
-    <ContentWrapper title={folder.name} initialContent={initialContent} folderContent={folderContent} setFolderContent={setFolderContent}>
-      <div className="p-8 w-full">
-        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-          {(folderContent && folderContent.length > 0) ? folderContent.map((item: any) => (
-            <ContentCard
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            contentType={item.type}
-            url={item.url}
-            tags={item.tags}
-            completed={item.completed}
-          />
-            
-          )) : null}
-        </div>
-      </div>
-    </ContentWrapper>
+    <ContentWrapper title={folder.name} initialContent={folderContent}/>
   )
 }
+
+export default FolderPage;

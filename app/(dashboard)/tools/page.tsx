@@ -89,7 +89,9 @@ export default function ToolsPage() {
     }
 
     const handleAddTool = () => {
+        console.log("before execute, tool: ", newTool)
         executeCreate(newTool)
+        console.log("after execute")
         setIsDialogOpen(false)
         setTimeout(() => {
             setNewTool({ title: "", iconUrl: "auto", url: "" })

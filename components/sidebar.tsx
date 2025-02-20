@@ -21,7 +21,6 @@ import { FolderTree } from "./folder-tree"
 import { buildFolderTree } from "@/lib/utils"
 import { FolderSelect } from "./folder-select"
 import { ScrollArea } from "@/components/ui/scroll-area"
-//import { createClient } from "@/lib/supabase/client"
 import { useAction } from "@/hooks/useAction"
 import { createFolder } from "@/lib/server/actions/folder/create"
 import { toast } from "sonner"
@@ -107,27 +106,6 @@ export function Sidebar() {
   //const initialFolders = profile?.folders
   //const rootFolders = initialFolders.filter((folder: any) => !folder.parentId)
   //const folderTree = rootFolders.map((folder: any) => buildFolderTree(initialFolders, folder))
-
-
-
-  /*const supabase = createClient();
-   
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-      //console.log(session?.user)
-    };
-
-    fetchUser();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []); */
 
 
 

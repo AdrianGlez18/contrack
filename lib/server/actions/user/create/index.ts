@@ -2,13 +2,12 @@
 
 import { InputType, OutputType } from "./types";
 import { db } from "@/lib/server/db";
-import { ToolZodSchema } from "./schema";
+import { UserZodSchema } from "./schema";
 import { createSafeAction } from "../../createSafeAction";
-import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 
-const handleDelete = async (data: InputType): Promise<OutputType> => {
-    
+const create = async (data: InputType): Promise<OutputType> => {
+
     const { userId } = await auth();
 
     if (!userId) {
@@ -16,15 +15,15 @@ const handleDelete = async (data: InputType): Promise<OutputType> => {
             error: "Unauthorized"
         }
     };
+    
+    const { email } = data;
 
-    let toolToDelete;
-
-    const { id: toolId } = data;
+    let newUser;
 
     try {
-        toolToDelete = await db.tool.delete({
-            where: {
-                id: toolId,
+        newUser = await db.prismaUser.create({
+            data: {
+                email,
                 userId
             }
         })
@@ -34,8 +33,8 @@ const handleDelete = async (data: InputType): Promise<OutputType> => {
         }
     }
 
-    revalidatePath('/tools');
-    return { data: toolToDelete }
+    //revalidatePath(`/board/${board.id}`);
+    return { data: newUser }
 }
 
-export const deleteTool = createSafeAction(ToolZodSchema, handleDelete);
+export const createContent = createSafeAction(UserZodSchema, create);

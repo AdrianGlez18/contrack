@@ -5,22 +5,17 @@ import { db } from "@/lib/server/db";
 import { revalidatePath } from "next/cache";
 import { FolderZodSchema } from "./schema";
 import { createSafeAction } from "../../createSafeAction";
-import { createClient } from "@/lib/supabase/server";
+import { auth } from "@clerk/nextjs/server";
 
 
 const create = async (data: InputType): Promise<OutputType> => {
-    const supabase = await createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    const { userId } = await auth();
 
-    if (!user || !user.id) {
+    if (!userId) {
         return {
             error: "Unauthorized"
         }
-    }
-
-    const userId = user.id;
+    };
     const { name, parentId } = data;
     let newFolder;
 
@@ -32,6 +27,11 @@ const create = async (data: InputType): Promise<OutputType> => {
                 userId
             }
         })
+        
+        revalidatePath('/folders');
+        revalidatePath('/content');
+        revalidatePath('/');
+        
     } catch (error) {
         return {
             error: "Internal database error"

@@ -1,46 +1,22 @@
-"use client"
-
-import ContentCard from "@/components/content-card"
 import ContentWrapper from "@/components/content-wrapper"
-import { useEffect, useState } from "react"
-import { useProfile } from "@/components/context/profileContext"
+import { auth } from "@clerk/nextjs/server"
+import { getContent } from "@/lib/server/queries"
+import { redirect } from "next/navigation"
 
-export default function Home() {
 
-  const [folderContent, setFolderContent] = useState<any>([])
-  let { profile, loading } = useProfile();
+const FolderPage = async () => {
 
-  useEffect(() => {
-    if (profile?.content) {
-      setFolderContent(profile.content);
-    }
-  }, [profile?.content]);
+  const { userId } = await auth();
 
-  //TODO: estilos (retornar skeleton)
-  if (loading) {
-    return <p>Loading...</p>;
+  if (!userId) {
+    redirect("/sign-in");
   }
 
+  const folderContent = await getContent();
   
   return (
-    <ContentWrapper title="Your Content" initialContent={profile?.content} folderContent={folderContent} setFolderContent={setFolderContent}>
-      <div className="p-8">
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {folderContent.map((item: any) => (
-            <ContentCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              description={item.description}
-              contentType={item.type}
-              url={item.url}
-              tags={item.tags}
-              completed={item.completed}
-            />
-          ))}
-        </div>
-      </div>
-    </ContentWrapper>
+    <ContentWrapper title="Your Content" initialContent={folderContent}/>
   )
 }
 
+export default FolderPage;

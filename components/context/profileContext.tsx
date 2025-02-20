@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 
 type ProfileContextType = {
     profile: any;
@@ -9,9 +10,14 @@ type ProfileContextType = {
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
-export const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
+export function ProfileProvider({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const refreshProfile = useCallback(() => {
+        router.refresh();
+    }, [router]);
 
     useEffect(() => {
         const fetchProfile = async () => {

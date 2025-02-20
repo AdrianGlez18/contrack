@@ -6,29 +6,33 @@ import { db } from "@/lib/server/db";
 import { revalidatePath } from "next/cache";
 import { ToolZodSchema } from "./schema";
 import { createSafeAction } from "../../createSafeAction";
-import { createClient } from "@/lib/supabase/server";
 import { getFallbackIcon } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
 
 
 const create = async (data: InputType): Promise<OutputType> => {
-    const supabase = await createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    console.log("before userId") 
+    const { userId } = await auth();
 
-    if (!user || !user.id) {
+    if (!userId) {
         return {
             error: "Unauthorized"
         }
-    }
-
-    const userId = user.id;
+    };
+    console.log("after userId")
+    
     const { title, url } = data;
+    
     const iconUrl = getFallbackIcon(url);
+    console.log("title, url, icon", title, url, iconUrl)
     let newTool;
 
+    console.log("before try")
+
     try {
-        newTool = await db.tool.create({
+        console.log("in try")
+        newTool = await db
+        .tool.create({
             data: {
                 title,
                 url,
@@ -36,13 +40,17 @@ const create = async (data: InputType): Promise<OutputType> => {
                 userId
             }
         })
+        console.log("after create try")
     } catch (error) {
+        console.log("in error", error)
         return {
             error: "Internal database error"
         }
     }
-
-    //revalidatePath(`/board/${board.id}`);
+    console.log("before revalidate")
+    revalidatePath(`/folders`);
+    revalidatePath(`/tools`);
+    console.log("after revalidate")
     return { data: newTool }
 }
 
