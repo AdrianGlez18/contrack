@@ -38,7 +38,7 @@ const contentTemplate: contentType = {
   type: "VIDEO",
   tags: []
 }
-
+// TODO: Hacer que el udate funcione, y dejar de usar el profileContext
 export default function ContentPage({
   params,
 }: {

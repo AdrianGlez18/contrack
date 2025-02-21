@@ -28,6 +28,7 @@ const create = async (data: InputType): Promise<OutputType> => {
             }
         })
         
+        revalidatePath('/folders/add-content');
         revalidatePath('/folders');
         revalidatePath('/content');
         revalidatePath('/');

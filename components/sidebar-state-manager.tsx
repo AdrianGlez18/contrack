@@ -12,7 +12,7 @@ export function SidebarStateManager({ folderTree }: SidebarStateManagerProps) {
 
     const router = useRouter();
 
-    const [activeFolder, setActiveFolder] = useState<string>('__tools__');
+    const [activeFolder, setActiveFolder] = useState<string>('');
 
     const handleFolderClick = (folderId: string) => {
         setActiveFolder(folderId)

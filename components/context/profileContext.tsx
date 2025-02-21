@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 type ProfileContextType = {
     profile: any;
     loading: boolean;
+    refresh: () => Promise<void>;
 };
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
@@ -15,42 +16,38 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const refreshProfile = useCallback(() => {
-        router.refresh();
-    }, [router]);
+    const fetchProfile = useCallback(async () => {
+        try {
+            const response = await fetch('/api/profile');
+            if (!response.ok) {
+                throw new Error('Failed to fetch profile');
+            }
+            const data = await response.json();
+            setProfile(data);
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await fetch(`/api/profile`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch profile');
-                }
-                const data = await response.json();
-                setProfile(data);
-            } catch (error) {
-                console.error('Error fetching profile:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         if (profile === null) {
-            console.log('Fetching profile...');
             fetchProfile();
         }
-    }, []); 
-
-      
+    }, [fetchProfile, profile]);
 
     return (
-        <ProfileContext.Provider value={{ profile, loading }}>
+        <ProfileContext.Provider value={{ 
+            profile, 
+            loading,
+            refresh: fetchProfile
+        }}>
             {children}
         </ProfileContext.Provider>
     );
-};
+}
 
-//export const useProfile = () => useContext(ProfileContext);
 export const useProfile = () => {
     const context = useContext(ProfileContext);
     if (!context) {

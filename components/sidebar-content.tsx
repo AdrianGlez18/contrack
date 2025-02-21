@@ -31,6 +31,7 @@ const SidebarContent = ({
 }: SidebarContentProps) => {
     const pathname = usePathname();
 
+    //TODO: expandedFolders persist as localstorage
     const [selectedParentFolder, setSelectedParentFolder] = useState<string>();
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
 
@@ -38,8 +39,6 @@ const SidebarContent = ({
     const [createDialogExpandedFolders, setCreateDialogExpandedFolders] = useState<Set<string>>(new Set())
 
     const [newFolderName, setNewFolderName] = useState("")
-    const [rootFolders, setRootFolders] = useState<any>([])
-
 
     const { execute: executeCreate } = useAction(createFolder, {
         onSuccess: (data) => {
@@ -168,11 +167,11 @@ const SidebarContent = ({
                         className={cn(
                             "w-full justify-start gap-2 relative",
                             {
-                                "bg-accent": activeFolder === '//folders' || pathname === '/folders',
+                                "bg-accent": activeFolder === '__folders__' || pathname === '/folders',
                             },
                         )}
                         onClick={(e) => {
-                            setActiveFolder('//folders')
+                            setActiveFolder('__folders__');
                         }}
                         asChild
                     >

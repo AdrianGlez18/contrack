@@ -1,10 +1,11 @@
 "use client"
 
 import { Content } from '@prisma/client'
-import { Header } from './header'
+import { Header } from './content-header'
 import { useState } from 'react'
 import ContentCard from './content-card'
 
+//TODO: Si no hay ninguna, crear un placeholder con un botón para crear una
 const ContentWrapper = ({ title, initialContent }: {
     title: string,
     initialContent: any[],
@@ -14,7 +15,7 @@ const ContentWrapper = ({ title, initialContent }: {
         <>
             <Header title={title} initialContent={initialContent} folderContent={folderContent} setFolderContent={setFolderContent} />
             <main className="flex-1 overflow-auto bg-background">
-                <div className="p-8">
+                <div className="p-4">
                     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                         {folderContent.map((item: any) => (
                             <ContentCard

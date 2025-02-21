@@ -25,7 +25,7 @@ interface ContentCardProps {
 
 const ContentCard = ({ id, title, description, contentType, url, tags, completed }: ContentCardProps) => {
   return (
-    <Card key={id}>
+    <Card key={id} className="shadow-md max-w-[90%]">
       {contentType === "VIDEO" && getVideoThumbnail(url) && (
         <div className="relative w-full h-48 overflow-hidden">
           <Image 
@@ -33,7 +33,7 @@ const ContentCard = ({ id, title, description, contentType, url, tags, completed
             alt={`Video thumbnail for ${title}`}
             width={400}
             height={225}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover hover:scale-110 transition-all duration-300 ease-in-out"
           />
         </div>
       )}

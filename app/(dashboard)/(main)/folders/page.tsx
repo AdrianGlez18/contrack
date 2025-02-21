@@ -2,6 +2,7 @@ import ContentWrapper from "@/components/content-wrapper"
 import { auth } from "@clerk/nextjs/server"
 import { getContent } from "@/lib/server/queries"
 import { redirect } from "next/navigation"
+import { MobileHeader } from "@/components/mobile-header"
 
 
 const FolderPage = async () => {
@@ -9,13 +10,18 @@ const FolderPage = async () => {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect("/sign-in");
+    return redirect("/login");
   }
 
   const folderContent = await getContent();
+  const title = "Your Content"
   
   return (
-    <ContentWrapper title="Your Content" initialContent={folderContent}/>
+    <>
+    <MobileHeader title={title} />
+    <ContentWrapper title={title} initialContent={folderContent}/>
+    </>
+    
   )
 }
 

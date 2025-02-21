@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
 
     <ProfileProvider>
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex h-screen overflow-hidden w-full flex-col lg:flex-row">
         <Sidebar />
         {children}
         <Toaster />

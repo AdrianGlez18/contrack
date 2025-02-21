@@ -1,11 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from 'next/font/google'
 import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
+  ClerkProvider
 } from '@clerk/nextjs'
 import "@/styles/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"

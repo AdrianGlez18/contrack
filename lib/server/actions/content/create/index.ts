@@ -37,10 +37,12 @@ const create = async (data: InputType): Promise<OutputType> => {
             }
         })
         
-        revalidatePath(`/folders/${newContent.folderId}`);
-        revalidatePath('/folders');
-        revalidatePath('/content');
-        revalidatePath('/');
+        if (folderId) {
+            console.log("revalidating ", folderId)
+            revalidatePath(`/folders/${folderId}`);
+        }
+        revalidatePath('/folders', 'layout');
+        revalidatePath('/', 'layout');
         
     } catch (error) {
         return {
@@ -48,7 +50,6 @@ const create = async (data: InputType): Promise<OutputType> => {
         }
     }
 
-    //revalidatePath(`/board/${board.id}`);
     return { data: newContent }
 }
 
