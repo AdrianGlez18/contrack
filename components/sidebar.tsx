@@ -10,7 +10,36 @@ export async function Sidebar() {
   const { userId } = await auth();
 
   if (!userId) {
-    return redirect("/login");
+    return redirect("/");
+  }
+
+  const folders = await getFolders();
+  const rootFolders = folders.filter((folder: any) => !folder.parentId);
+  const folderTree = rootFolders.map((folder: any) => buildFolderTree(folders, folder));
+
+  return (
+    <div className="hidden lg:block w-72 border-r shrink-0 sticky top-0 h-screen">
+      <div className="flex flex-col h-full">
+        <SidebarStateManager folderTree={folderTree} />
+        <div className="flex gap-4 items-center justify-start h-16 w-full p-2 ml-4 mb-4 mt-auto">
+          <UserButton appearance={{
+            elements: {
+              avatarBox: "h-10 w-10",
+              userButtonBox: "flex-row-reverse text-foreground",
+            },
+          }} showName={true} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* export async function Sidebar() {
+
+  const { userId } = await auth();
+
+  if (!userId) {
+    return redirect("/");
   }
 
   const folders = await getFolders();
@@ -32,5 +61,4 @@ export async function Sidebar() {
       </div>
     </div>
   )
-}
-
+} */

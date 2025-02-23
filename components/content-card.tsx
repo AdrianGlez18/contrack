@@ -48,7 +48,7 @@ const ContentCard = ({ id, title, description, contentType, url, tags, completed
           )}
         </div>
       </CardHeader>
-      <CardContent className="h-full">
+      <CardContent>
         <p className="text-sm text-muted-foreground mb-4">
           {description}
         </p>

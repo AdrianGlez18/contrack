@@ -16,13 +16,13 @@ export default async function AddContentPage() {
   const folderTree = rootFolders.map((folder: any) => buildFolderTree(folders, folder));
 
   return (
-    <div className="w-full py-8 overflow-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Add Content</h1>
-        <p className="text-muted-foreground mt-2">
-          Add a new piece of content to your library
-        </p>
-      </div>
+      <div className="lg:p-8">
+        <div className="mb-8 ml-4 mt-2">
+          <h1 className="text-3xl font-bold">Add Content</h1>
+          <p className="text-muted-foreground mt-2">
+            Add a new piece of content to your library
+          </p>
+        </div>
 
       <AddContentForm folderTree={folderTree} />
     </div>

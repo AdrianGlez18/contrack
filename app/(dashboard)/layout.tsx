@@ -11,21 +11,19 @@ export const metadata: Metadata = {
   description: "Store and organize your favorite content",
 }
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-
-    <ProfileProvider>
-      <div className="flex h-screen overflow-hidden w-full flex-col lg:flex-row">
-        <Sidebar />
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 overflow-auto">
         {children}
         <Toaster />
-      </div>
-    </ProfileProvider>
-
+      </main>
+    </div>
   )
 }
 
