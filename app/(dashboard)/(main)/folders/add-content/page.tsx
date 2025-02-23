@@ -4,8 +4,6 @@ import { AddContentForm } from "@/components/add-content-form"
 import { auth } from "@clerk/nextjs/server"
 import { getFolders } from "@/lib/server/queries"
 
-//Todo get foldertree desde el server. 
-//todo Mover form a un componente aparte llamado add-content-form
 export default async function AddContentPage() {
   const { userId } = await auth();
 

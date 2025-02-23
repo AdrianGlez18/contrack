@@ -5,7 +5,6 @@ import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-//todo fix active section highlight when redirected
 export async function Sidebar() {
 
   const { userId } = await auth();

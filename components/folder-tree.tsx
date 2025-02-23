@@ -19,7 +19,7 @@ interface FolderTreeProps {
   level?: number
   activeFolder?: string
   onFolderClick: (folderId: string) => void
-  expandedFolders: Set<string>
+  expandedFolders: Record<string, boolean>
   onToggleExpand: (folderId: string) => void
 }
 
@@ -62,7 +62,7 @@ export function FolderTree({
                 {folder.children?.length ? (
                   <ChevronRight
                     className={cn("h-4 w-4 shrink-0 transition-transform", {
-                      "transform rotate-90": expandedFolders.has(folder.id),
+                      "transform rotate-90": expandedFolders[folder.id],
                     })}
                   />
                 ) : (
@@ -72,7 +72,7 @@ export function FolderTree({
                 {folder.name}
               </Link>
             </Button>
-            {folder.children?.length && expandedFolders.has(folder.id) && (
+            {folder.children?.length && expandedFolders[folder.id] && (
               <div className="pl-4">
                 <FolderTree
                   folders={folder.children}

@@ -1,7 +1,5 @@
 "use client"
 
-//TODO Mobile Header and sidebar
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Plus, X } from 'lucide-react'
@@ -21,7 +19,6 @@ import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command"
 import { Checkbox } from "./ui/checkbox"
 
-//TODO Change tags component to filtered one
 //Todo sort content
 //todo pagination (12 per page)
 

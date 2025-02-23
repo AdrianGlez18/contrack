@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 import { Button } from './ui/button'
 import { Folder, Plus } from 'lucide-react'
@@ -15,6 +15,7 @@ import { usePathname } from 'next/navigation'
 import { useAction } from '@/hooks/useAction'
 import { createFolder } from '@/lib/server/actions/folder/create'
 import { toast } from 'sonner'
+import { useLocalStorage } from "usehooks-ts";
 
 interface SidebarContentProps {
     folderTree: any[]
@@ -31,9 +32,10 @@ const SidebarContent = ({
 }: SidebarContentProps) => {
     const pathname = usePathname();
 
-    //TODO: expandedFolders persist as localstorage
     const [selectedParentFolder, setSelectedParentFolder] = useState<string>();
-    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [expandedFolders, setExpandedFolders] = useLocalStorage<Record<string, boolean>>
+        ("sidebar-expanded", {});
 
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
     const [createDialogExpandedFolders, setCreateDialogExpandedFolders] = useState<Set<string>>(new Set())
@@ -65,7 +67,7 @@ const SidebarContent = ({
     };
 
     const handleToggleExpand = (folderId: string) => {
-        setExpandedFolders((prev) => {
+        /* setExpandedFolders((prev) => {
             const next = new Set(prev)
             if (next.has(folderId)) {
                 next.delete(folderId)
@@ -73,7 +75,11 @@ const SidebarContent = ({
                 next.add(folderId)
             }
             return next
-        })
+        }) */
+        setExpandedFolders((curr) => ({
+            ...curr,
+            [folderId]: !expandedFolders[folderId],
+        }))
     }
 
     const handleCreateDialogToggleExpand = (folderId: string) => {
@@ -86,6 +92,31 @@ const SidebarContent = ({
             }
             return next
         })
+    }
+
+    useEffect(() => {
+        setIsLoaded(true)
+    }, [])
+
+    if (!isLoaded) {
+        return (
+            <div className="px-4 py-2">
+                <div className="flex items-center justify-between">
+                    <h2 className="px-2 text-lg font-semibold tracking-tight">
+                        Content
+                    </h2>
+                </div>
+
+                <div className="animate-pulse">
+                    <div className="h-8 bg-muted rounded-md mb-2" />
+                    {[...Array(8)].map((_, i) => (
+                        <div key={i} className="space-y-2">
+                            <div className="h-8 bg-muted rounded-md my-2" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )
     }
 
     return (

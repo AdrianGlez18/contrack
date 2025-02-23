@@ -7,7 +7,7 @@ datasource db {
   url       = env("DATABASE_URL")
   //directUrl = env("DIRECT_URL")
 }
-//todo create trigger in neon
+
 model PrismaUser {
   id             String    @id @default(cuid())
   userId         String    @unique

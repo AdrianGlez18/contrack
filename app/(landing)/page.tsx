@@ -1,12 +1,17 @@
-"use client"
-
 import { Button } from "@/components/ui/button"
-import { SignUpButton } from "@clerk/nextjs"
+import { SignInButton, SignUpButton } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server";
 import { ChevronRight, Chrome, Folder, Library, Tags, Video } from 'lucide-react'
+import { redirect } from "next/navigation";
 import Link from "next/link"
 
-export default function LandingPage() {
-  
+export default async function LandingPage() {
+  const { userId } = await auth();
+
+  if (userId) {
+    return redirect("/folders");
+  }
+
   return (
     <div className="flex flex-col min-h-screen w-full">
       <header className="border-b w-full flex items-center justify-center">
@@ -15,10 +20,7 @@ export default function LandingPage() {
             <Library className="h-6 w-6 mr-2" />
             <span>Contrack</span>
           </div>
-          <Button variant="ghost" asChild>
-            <Link href="/login">Sign in</Link>
-          </Button>
-          <SignUpButton/>
+          <SignInButton/>
         </div>
       </header>
       <main className="flex flex-col w-full items-center justify-center">
