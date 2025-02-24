@@ -28,7 +28,8 @@ const ContentWrapper = ({ title, initialContent }: {
                 <div className="p-4">
                     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                         {currentContent.map((item: any) => (
-                            <ContentCard
+                            <div className="flex items-center justify-center">
+                                <ContentCard
                                 key={item.id}
                                 id={item.id}
                                 title={item.title}
@@ -38,6 +39,7 @@ const ContentWrapper = ({ title, initialContent }: {
                                 tags={item.tags}
                                 completed={item.completed}
                             />
+                            </div>
                         ))}
                     </div>
                     {totalPages > 1 && (

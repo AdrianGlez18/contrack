@@ -78,3 +78,19 @@ export const getFolder = cache(async (folderId: string) => {
     });
     return folder;
 });
+
+export const getContentById = cache(async (contentId: string) => {
+    const { userId } = await auth();
+
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const content = await db.content.findUnique({
+        where: {
+            id: contentId,
+            userId
+        }
+    });
+    return content;
+});
